@@ -1,4 +1,4 @@
-package devnoh.java.reactive.ex03;
+package devnoh.java.reactive.ex02;
 
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;

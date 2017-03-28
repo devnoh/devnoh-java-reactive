@@ -1,13 +1,13 @@
-package devnoh.java.reactive.ex03;
+package devnoh.java.reactive.ex02;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-public class DelegateSub3<T, R> implements Subscriber<T> {
+public class DelegateSub2<T> implements Subscriber<T> {
 
     private Subscriber sub;
 
-    public DelegateSub3(Subscriber<? super R> sub) {
+    public DelegateSub2(Subscriber<? super T> sub) {
         this.sub = sub;
     }
 

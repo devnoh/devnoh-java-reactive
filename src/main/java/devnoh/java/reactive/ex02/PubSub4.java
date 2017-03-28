@@ -1,4 +1,4 @@
-package devnoh.java.reactive.ex03;
+package devnoh.java.reactive.ex02;
 
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
@@ -6,7 +6,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,46 +24,81 @@ import java.util.stream.Stream;
  * -> onComplete
  */
 @Slf4j
-public class PubSub2 {
+public class PubSub4 {
 
     public static void main(String[] args) {
         Publisher<Integer> pub = iterPub(Stream.iterate(1, a -> a + 1).limit(10).collect(Collectors.toList()));
-        //Publisher<Integer> mapPub = mapPub(pub, (Function<Integer, Integer>) s -> s * 10);
-        Publisher<Integer> mapPub = mapPub(pub, s -> s * 10);
-        //mapPub.subscribe(logSub());
-        Publisher<Integer> map2Pub = mapPub(mapPub, s -> -s);
-        map2Pub.subscribe(logSub());
+//        Publisher<Integer> mapPub = mapPub(pub, s -> s * 10);
+//        mapPub.subscribe(logSub());
+//        Publisher<Integer> sumPub = sumPub(pub);
+//        sumPub.subscribe(logSub());
+        // Publisher<Integer> reducePub = reducePub(pub, 0, (BiFunction<Integer, Integer, Integer>) (a, b) -> a + b);
+        Publisher<Integer> reducePub = reducePub(pub, 0, (a, b) -> a + b);
+        reducePub.subscribe(logSub());
     }
 
-    private static Publisher<Integer> mapPub(Publisher<Integer> pub, Function<Integer, Integer> f) {
+    // 1, 2, 3, 4, 5
+    // 0 -> (0, 1) -> 0 + 1 = 1
+    // 1 -> (1, 2) -> 1 + 2 = 3
+    // 3 -> (3, 3) -> 3 + 3 = 6
+    // 6 -> ...
+
+    private static Publisher<Integer> reducePub(Publisher<Integer> pub, int init,
+            BiFunction<Integer, Integer, Integer> bf) {
         return new Publisher<Integer>() {
             @Override
             public void subscribe(Subscriber<? super Integer> sub) {
-                pub.subscribe(new Subscriber<Integer>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                        sub.onSubscribe(s);
-                    }
+                pub.subscribe(new DelegateSub(sub) {
+                    int result = init;
 
                     @Override
                     public void onNext(Integer i) {
-                        //sub.onNext(i);
-                        sub.onNext(f.apply(i));
+                        result = bf.apply(result, i);
                     }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        sub.onError(t);
-                    }
-
-                    @Override
-                    public void onComplete() {
+                    @Override public void onComplete() {
+                        sub.onNext(result);
                         sub.onComplete();
                     }
                 });
             }
         };
     }
+
+//    private static Publisher<Integer> sumPub(Publisher<Integer> pub) {
+//        return new Publisher<Integer>() {
+//            @Override
+//            public void subscribe(Subscriber<? super Integer> sub) {
+//                pub.subscribe(new DelegateSub(sub) {
+//                    int sum = 0;
+//
+//                    @Override public void onNext(Integer i) {
+//                        sum += i;
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        sub.onNext(sum);
+//                        sub.onComplete();
+//                    }
+//                });
+//            }
+//        };
+//    }
+//
+//    private static Publisher<Integer> mapPub(Publisher<Integer> pub, Function<Integer, Integer> f) {
+//        return new Publisher<Integer>() {
+//            @Override
+//            public void subscribe(Subscriber<? super Integer> sub) {
+//                pub.subscribe(new DelegateSub(sub) {
+//                    @Override
+//                    public void onNext(Integer i) {
+//                        sub.onNext(f.apply(i));
+//                    }
+//                });
+//            }
+//        };
+//    }
 
     private static Subscriber<Integer> logSub() {
         return new Subscriber<Integer>() {

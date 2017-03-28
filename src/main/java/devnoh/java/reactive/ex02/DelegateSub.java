@@ -1,13 +1,13 @@
-package devnoh.java.reactive.ex03;
+package devnoh.java.reactive.ex02;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-public class DelegateSub2<T> implements Subscriber<T> {
+public class DelegateSub implements Subscriber<Integer> {
 
     private Subscriber sub;
 
-    public DelegateSub2(Subscriber<? super T> sub) {
+    public DelegateSub(Subscriber sub) {
         this.sub = sub;
     }
 
@@ -17,7 +17,7 @@ public class DelegateSub2<T> implements Subscriber<T> {
     }
 
     @Override
-    public void onNext(T i) {
+    public void onNext(Integer i) {
         sub.onNext(i);
     }
 

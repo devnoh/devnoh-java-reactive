@@ -1,4 +1,4 @@
-package devnoh.java.reactive.ex03;
+package devnoh.java.reactive.ex02;
 
 import reactor.core.publisher.Flux;
 
