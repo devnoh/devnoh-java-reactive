@@ -5,17 +5,21 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Reactive Streams - Schedulers
  */
 @Slf4j
-public class SchedulerEx {
+public class SchedulerEx2 {
 
     public static void main(String[] args) {
         Publisher<Integer> pub = sub -> {
             sub.onSubscribe(new Subscription() {
                 @Override
                 public void request(long l) {
+                    log.debug("request");
                     sub.onNext(1);
                     sub.onNext(2);
                     sub.onNext(3);
@@ -31,7 +35,12 @@ public class SchedulerEx {
             });
         };
 
-        pub.subscribe(new Subscriber<Integer>() {
+        Publisher<Integer> subOnPub = sub -> {
+            ExecutorService es = Executors.newSingleThreadExecutor();
+            es.execute(() -> pub.subscribe(sub));
+        };
+
+        subOnPub.subscribe(new Subscriber<Integer>() {
             @Override
             public void onSubscribe(Subscription s) {
                 log.debug("onSubscribe");
