@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * Observable (Push)
  */
-public class IterableDemo {
+public class IterableEx {
 
     public static void main(String[] args) {
 

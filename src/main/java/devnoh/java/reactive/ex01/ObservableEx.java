@@ -6,7 +6,7 @@ import java.util.Observer;
 /**
  * Iterable (Pull)
  */
-public class ObservableDemo {
+public class ObservableEx {
 
     static class IntObservable extends Observable implements Runnable {
         @Override
