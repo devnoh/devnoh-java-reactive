@@ -1,4 +1,4 @@
-package devnoh.java.reactive.ex04;
+package devnoh.reactive.ex04;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,24 +13,18 @@ import java.util.concurrent.FutureTask;
  * Async - Callback
  */
 @Slf4j
-public class FutureEx6 {
+public class FutureEx5 {
 
     interface SuccessCallback {
         void onSuccess(String result);
     }
 
-    interface ExceptionCallback {
-        void onError(Throwable t);
-    }
-
     public static class CallbackFutureTask extends FutureTask<String> {
         SuccessCallback sc;
-        ExceptionCallback ec;
 
-        public CallbackFutureTask(Callable<String> callable, SuccessCallback sc, ExceptionCallback ec) {
+        public CallbackFutureTask(Callable<String> callable, SuccessCallback sc) {
             super(callable);
             this.sc = Objects.requireNonNull(sc);
-            this.ec = Objects.requireNonNull(ec);
         }
 
         @Override
@@ -38,11 +32,9 @@ public class FutureEx6 {
             try {
                 sc.onSuccess(get());
             } catch (InterruptedException e) {
-                // e.printStackTrace();
-                Thread.currentThread().interrupt();
+                e.printStackTrace();
             } catch (ExecutionException e) {
-                // e.printStackTrace();
-                ec.onError(e.getCause());
+                e.printStackTrace();
             }
         }
     }
@@ -52,15 +44,10 @@ public class FutureEx6 {
 
         CallbackFutureTask f = new CallbackFutureTask(() -> {
             Thread.sleep(2000);
-            if (1 == 1) {
-                throw new RuntimeException("Async Error!");
-            }
             log.debug("Async");
             return "Hello";
-        }, s -> {
-            log.debug("Success: " + s);
-        }, e -> {
-            log.error("Error: " + e.getMessage());
+        }, result -> {
+            log.debug(result);
         });
 
         es.execute(f);

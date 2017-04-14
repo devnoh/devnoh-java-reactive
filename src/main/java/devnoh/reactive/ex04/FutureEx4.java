@@ -1,4 +1,4 @@
-package devnoh.java.reactive.ex04;
+package devnoh.reactive.ex04;
 
 import lombok.extern.slf4j.Slf4j;
 
