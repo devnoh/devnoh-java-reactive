@@ -38,7 +38,7 @@ public class PubSub3 {
         return new Publisher<Integer>() {
             @Override
             public void subscribe(Subscriber<? super Integer> sub) {
-                pub.subscribe(new DelegateSub(sub) {
+                pub.subscribe(new DelegateSub1(sub) {
                     int sum = 0;
                     @Override public void onNext(Integer i) {
                         sum += i;
@@ -58,7 +58,7 @@ public class PubSub3 {
         return new Publisher<Integer>() {
             @Override
             public void subscribe(Subscriber<? super Integer> sub) {
-                pub.subscribe(new DelegateSub(sub) {
+                pub.subscribe(new DelegateSub1(sub) {
                     @Override
                     public void onNext(Integer i) {
                         sub.onNext(f.apply(i));

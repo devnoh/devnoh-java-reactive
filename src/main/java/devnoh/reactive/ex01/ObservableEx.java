@@ -4,7 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Iterable (Pull)
+ * Observable (Push)
  */
 public class ObservableEx {
 

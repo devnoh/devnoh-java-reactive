@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
  * Async - Future
  */
 @Slf4j
-public class FutureEx {
+public class FutureEx1 {
 
     public static void main(String[] args) throws InterruptedException {
         ExecutorService es = Executors.newCachedThreadPool();

@@ -3,11 +3,11 @@ package devnoh.reactive.ex02;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-public class DelegateSub implements Subscriber<Integer> {
+public class DelegateSub1 implements Subscriber<Integer> {
 
     private Subscriber sub;
 
-    public DelegateSub(Subscriber sub) {
+    public DelegateSub1(Subscriber sub) {
         this.sub = sub;
     }
 

@@ -5,23 +5,23 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-/**
- * Reactive Streams - Schedulers
- */
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
-public class SchedulerEx {
+public class IntervalEx1 {
 
     public static void main(String[] args) {
         Publisher<Integer> pub = sub -> {
             sub.onSubscribe(new Subscription() {
-                @Override
-                public void request(long l) {
-                    sub.onNext(1);
-                    sub.onNext(2);
-                    sub.onNext(3);
-                    sub.onNext(4);
-                    sub.onNext(5);
-                    sub.onComplete();
+                int no = 0;
+
+                @Override public void request(long l) {
+                    ScheduledExecutorService es = Executors.newSingleThreadScheduledExecutor();
+                    es.scheduleAtFixedRate(() -> {
+                        sub.onNext(no++);
+                    }, 0, 300, TimeUnit.MILLISECONDS);
                 }
 
                 @Override
@@ -55,5 +55,6 @@ public class SchedulerEx {
         });
 
         System.out.println("exit");
+
     }
 }

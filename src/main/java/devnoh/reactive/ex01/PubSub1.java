@@ -13,7 +13,7 @@ import java.util.Iterator;
  * Publisher <- Observable
  * Subscriber <- Observer
  */
-public class PubSub {
+public class PubSub1 {
 
     public static void main(String[] args) {
         Iterable<Integer> iterable = Arrays.asList(1, 2, 3, 4, 5);

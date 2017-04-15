@@ -3,7 +3,7 @@ package devnoh.reactive.ex01;
 import java.util.Iterator;
 
 /**
- * Observable (Push)
+ * Iterable (Pull)
  */
 public class IterableEx {
 

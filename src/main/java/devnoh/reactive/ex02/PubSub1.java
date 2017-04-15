@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * Reactive Streams - Operators
  */
 @Slf4j
-public class PubSub {
+public class PubSub1 {
 
     public static void main(String[] args) {
 
